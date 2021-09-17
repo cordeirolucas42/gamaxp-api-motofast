@@ -5,6 +5,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.listen(process.env.port, () => {
-  console.log(`Example app listening at http://localhost:${process.env.port}`)
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`Example app listening at http://localhost:${process.env.PORT || 5000}`)
 })
