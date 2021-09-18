@@ -1,9 +1,11 @@
 require('dotenv').config()
 const bodyParser = require('body-parser')
 const { Pool } = require('pg');
+var cors = require('cors')
 const express = require('express')
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cors())
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
