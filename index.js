@@ -1,4 +1,5 @@
 require('dotenv').config()
+const buscaCep = require('busca-cep');
 const bodyParser = require('body-parser')
 const { Pool } = require('pg');
 const express = require('express')
@@ -13,7 +14,13 @@ const pool = new Pool({
 });
 
 app.get('/', async (req, res) => {
-  res.send("API MotoFast")  
+  res.send("API Motos")
+})
+
+app.get('/:cep', async (req, res) => {
+  const { cep } = req.params
+  let endereco = await buscaCep(cep)
+  res.send(endereco)
 })
 
 // Distribuir para a pasta routes
