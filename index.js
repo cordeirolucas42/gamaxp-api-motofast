@@ -12,14 +12,14 @@ app.get('/', (req, res) => {
   res.send("API MotoFast")
 })
 
-app.get('/:cep', async (req, res) => {
+app.use('/motos', motosRoutes)
+app.use('/locais', locaisRoutes)
+
+app.get('/cep/:cep', async (req, res) => {
   const { cep } = req.params
   let endereco = await buscaCep(cep)
   res.send(endereco)
 })
-
-app.use('/motos', motosRoutes)
-app.use('/locais', locaisRoutes)
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT || 5000}`)
