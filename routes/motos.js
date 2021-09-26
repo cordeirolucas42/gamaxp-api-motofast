@@ -1,15 +1,13 @@
 const motosRoutes = require('express')();
 const pool = require('../db/connect');
-const bodyParser = require('body-parser')
 var cors = require('cors')
-motosRoutes.use(bodyParser.urlencoded({ extended: true }))
 motosRoutes.use(cors())
 
-motosRoutes.get('/', async (req, res) => {
-    console.log("get /motos")
-    const result = await pool.query('select * from motos')
-    res.send(result.rows)
-})
+motoController = require('../controllers/motoController')
+
+motosRoutes.get('/', motoController.getAllWithLocal)
+
+motosRoutes.get('/when/:date', motoController.getAllWhen)
 
 motosRoutes.get('/:id', async (req, res) => {
 const { id } = req.params

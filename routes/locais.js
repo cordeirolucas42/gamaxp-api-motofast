@@ -1,8 +1,6 @@
 const locaisRoutes = require('express')();
 const pool = require('../db/connect');
-const bodyParser = require('body-parser')
 var cors = require('cors')
-locaisRoutes.use(bodyParser.urlencoded({ extended: true }))
 locaisRoutes.use(cors())
 
 locaisRoutes.get('/', async (req, res) => {
