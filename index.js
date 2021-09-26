@@ -1,4 +1,5 @@
 require('dotenv').config()
+const buscaCep = require('busca-cep');
 var cors = require('cors')
 const express = require('express')
 const app = express()
@@ -8,7 +9,13 @@ const motosRoutes = require('./routes/motos')
 const locaisRoutes = require('./routes/locais')
 
 app.get('/', (req, res) => {
-  res.send("API MotoFast")  
+  res.send("API MotoFast")
+})
+
+app.get('/:cep', async (req, res) => {
+  const { cep } = req.params
+  let endereco = await buscaCep(cep)
+  res.send(endereco)
 })
 
 app.use('/motos', motosRoutes)
