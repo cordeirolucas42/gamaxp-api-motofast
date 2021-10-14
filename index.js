@@ -1,6 +1,6 @@
 require('dotenv').config()
-const buscaCep = require('busca-cep');
-var cors = require('cors')
+const cors = require('cors')
+const got = require('got');
 const express = require('express')
 const app = express()
 app.use(cors())
@@ -17,8 +17,8 @@ app.use('/locais', locaisRoutes)
 
 app.get('/cep/:cep', async (req, res) => {
   const { cep } = req.params
-  let endereco = await buscaCep(cep)
-  res.send(endereco)
+  const endereco = await got(`https://brasilapi.com.br/api/cep/v2/${cep}`)
+  res.send(endereco.body)
 })
 
 app.listen(process.env.PORT || 5000, () => {

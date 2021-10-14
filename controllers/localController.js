@@ -14,6 +14,9 @@ exports.getAvaiableWhen = async (req, res) => {
     inicio = new Date(inicio)
     fim = new Date(fim)
 
+    // const data = await got(`https://brasilapi.com.br/api/cep/v2/${cep}`)
+    // const {location: {coordinates: {latitude, longitude}}} = data.body
+
     let query = `select ${motosFields},endereco from motos left join locais using (local_id) order by endereco`
     let result = await pool.query(query)
     let motos = await motoController.expandLocal(result.rows)
