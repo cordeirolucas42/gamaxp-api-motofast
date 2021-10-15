@@ -1,7 +1,8 @@
 const pool = require('../db/connect');
 motoController = require('../controllers/motoController')
+const got = require('got');
 
-const locaisFields = 'endereco, lotacao'
+const locaisFields = 'endereco, latitude, longitude, zona'
 const motosFields = 'placa, manutencao, alugada, aluguel_data_retirada, aluguel_data_entrega, aluguel_local_retirada, aluguel_local_entrega, reservada, reserva_data_retirada, reserva_data_entrega, reserva_local_retirada, reserva_local_entrega'
 
 exports.getAll = async (req, res) => {
@@ -14,8 +15,11 @@ exports.getAvaiableWhen = async (req, res) => {
     inicio = new Date(inicio)
     fim = new Date(fim)
 
-    // const data = await got(`https://brasilapi.com.br/api/cep/v2/${cep}`)
-    // const {location: {coordinates: {latitude, longitude}}} = data.body
+    const data = await got(`https://brasilapi.com.br/api/cep/v2/${cep}`)
+    console.log(data.body)
+    let {latitude, longitude} = JSON.parse(data.body).location.coordinates
+    latitude = parseFloat(latitude)
+    longitude = parseFloat(longitude)
 
     let query = `select ${motosFields},endereco from motos left join locais using (local_id) order by endereco`
     let result = await pool.query(query)
@@ -36,9 +40,34 @@ exports.getAvaiableWhen = async (req, res) => {
             }).length
 
             return local
-        })
+        })  
 
-    res.send(locais)
+    const {sqrt, pow, abs} = Math
+
+    const localMaisProximo = locais.reduce((l1, l2) => (
+        l1.motos === 0 ? l2 : l2.motos === 0 ? l1 :
+            (
+                sqrt(
+                    pow(abs(l2.latitude - latitude), 2) +
+                    pow(abs(l2.longitude - longitude), 2)
+                ) <
+                sqrt(
+                    pow(abs(l1.latitude - latitude), 2) +
+                    pow(abs(l1.longitude - longitude), 2)
+                )
+            ) ? l2 : l1
+    ))
+
+    // res.send(locais)
+
+    // localMaisProximo.motos = motos.filter(moto => (
+    //     !moto.manutencao &&
+    //     !estaraReservadaEm(moto, inicio, fim) &&
+    //     !estaraAlugadaEm(moto, inicio, fim) &&
+    //     localMaisProximo.endereco === motoEstaraEm(moto, inicio)
+    // )).length
+
+    res.send(localMaisProximo)
 }
 
 const estaraAlugadaEm = (moto, inicio, fim) => {
