@@ -33,6 +33,8 @@ const expandLocal = async (motos) => {
     })
 }
 
+exports.expandLocal = expandLocal
+
 const motosWhen = (motos, inputDate) => {
     return motos.map(moto => {
         const [aluguel_data_entrega, reserva_data_retirada, reserva_data_entrega, date] = [moto.aluguel_data_entrega, moto.reserva_data_retirada, moto.reserva_data_entrega, inputDate].map(d => new Date(d))
