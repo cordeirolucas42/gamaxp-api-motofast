@@ -1,10 +1,24 @@
 DROP TABLE IF EXISTS motos;
 DROP TABLE IF EXISTS locais;
+DROP TABLE IF EXISTS motofasters;
+DROP TYPE IF EXISTS turno;
+
+CREATE TYPE zona_enum AS ENUM ('Norte', 'Sul', 'Leste', 'Oeste', 'Centro');
+CREATE TYPE turno_enum AS ENUM ('Manhã', 'Tarde', 'Noite', 'Madrugada');
+
+CREATE TABLE motofasters (
+    id serial PRIMARY KEY,
+    nome text NOT NULL,
+    zona zona_enum NOT NULL,
+    turno turno_enum NOT NULL
+);
 
 CREATE TABLE locais (
 	local_id serial PRIMARY KEY,
-    lotacao int NOT NULL,
-	endereco text NOT NULL
+	endereco text NOT NULL,
+    latitude numeric NOT NULL,
+    longitude numeric NOT NULL,
+    zona zona_enum NOT NULL
 );
 
 CREATE TABLE motos (
@@ -30,19 +44,61 @@ CREATE TABLE motos (
 );
 
 INSERT INTO
-    locais(lotacao,endereco)
+    motofasters(nome, zona, turno)
 VALUES
-    (5,'R. Flórida, 1.790 - Cidade Monções, São Paulo - SP, 04565-001'),
-    (10,'R. Leopoldo Couto de Magalhães Júnior, 994 - Jardim Paulista, São Paulo - SP, 04552-000'),
-    (4,'Rua Dr. Guilherme Bannitz, 90 - Vila Nova Conceição, São Paulo - SP, 04532-060'),
-    (5,'Av. Engenheiro Luís Carlos Berrini, 1774 - Cidade Monções, São Paulo - SP, 04571-000')
+    ('Cícero Fontes Ruiz', 'Norte', 'Manhã'),
+    ('Leonardo Correia Lópes', 'Norte', 'Manhã'),
+    ('Alfredo Ximenes Vila', 'Sul', 'Manhã'),
+    ('Vítor Meireles Dutra', 'Sul', 'Manhã'),
+    ('Arthur Falcão Fontana', 'Leste', 'Manhã'),
+    ('Isaías Luz Salgado', 'Leste', 'Manhã'),
+    ('Maria Medeiros Dutra', 'Centro', 'Manhã'),
+    ('Vanessa Justino Lourenço', 'Centro', 'Manhã'),
+    ('César Barreto Flores', 'Centro', 'Manhã'),
+    ('Rodrigo Amaral Araújo', 'Norte', 'Tarde'),
+    ('Frederico Mendes Dutra', 'Norte', 'Tarde'),
+    ('Vicente Jardim Machado', 'Norte', 'Tarde'),
+    ('Antônio Azevedo Nakamura', 'Sul', 'Tarde'),
+    ('Francine Souza Vasconcelos', 'Sul', 'Tarde'),
+    ('Paloma Sato Branco', 'Leste', 'Tarde'),
+    ('Natália Rezende Vidal', 'Centro', 'Tarde'),
+    ('Marcos Gonçalves Luz', 'Centro', 'Tarde'),
+    ('Gilson Serrano Guerra', 'Centro', 'Tarde'),
+    ('Aurélio Peres Álves', 'Norte', 'Noite'),
+    ('Giovane Salles Velho', 'Norte', 'Noite'),
+    ('Joaquim Rios Maldonado', 'Sul', 'Noite'),
+    ('Eric Tavares Esteves', 'Sul', 'Noite'),
+    ('Vinícius Falcão Leitão', 'Sul', 'Noite'),
+    ('Benedito Branco Prado', 'Leste', 'Noite'),
+    ('Osvaldo Duarte Ferraz', 'Leste', 'Noite'),
+    ('Manoel Lima Silveira', 'Centro', 'Noite'),
+    ('Vinicius Gimenes Aguiar', 'Centro', 'Noite'),
+    ('Raul Pires Padilha', 'Norte', 'Madrugada'),
+    ('Kléber Siqueira Macedo', 'Norte', 'Madrugada'),
+    ('Luiz Pessoa Zanetti', 'Sul', 'Madrugada'),
+    ('Vânia Peres Salgado', 'Sul', 'Madrugada'),
+    ('Suzana Ferraz Yamada', 'Leste', 'Madrugada'),
+    ('Antonieta Fonseca Pacheco', 'Leste', 'Madrugada'),
+    ('Nina Prestes Barbosa', 'Centro', 'Madrugada'),
+    ('Diana Branco Carvalho', 'Centro', 'Madrugada'),
+    ('Lucielle Maia Fagundes', 'Centro', 'Madrugada')
+RETURNING *;
+
+INSERT INTO
+    locais(endereco, latitude, longitude, zona)
+VALUES
+    ('R. Bela Vista, 857 - Santo Amaro, São Paulo - SP, 04709-001', -23.631148, -46.696078, 'Sul'),
+    ('Rua Padre Estevão Pernet, 420 - Vila Gomes Cardim, São Paulo - SP, 03315-000', -23.542878, -46.570886, 'Leste'),
+    ('Rua Correia de Melo, 98 - Bom Retiro, São Paulo - SP, 01123-020', -23.530502, -46.637557, 'Norte'),
+    ('Praça Dr. João Mendes, 24 - Centro Histórico de São Paulo, São Paulo - SP, 01501-000', -23.551375, -46.635399, 'Centro'),
+    ('R. Heitor Penteado, 1833 - Sumarezinho, São Paulo - SP, 05437-002', -23.543597, -46.695407, 'Oeste')
 RETURNING *;
 
 INSERT INTO
     motos(placa, manutencao, alugada, aluguel_data_retirada, aluguel_data_entrega, aluguel_local_retirada, aluguel_local_entrega, reservada, reserva_data_retirada, reserva_data_entrega, reserva_local_retirada, reserva_local_entrega, local_id)
 VALUES
     ('HZT-4589',false,true,'2021-09-10','2021-10-25',1,2,true,'2021-10-30','2021-11-20',2,4,NULL),
-    ('IXA-2261',false,true,'2021-09-10','2021-10-30',2,3,false,NULL,NULL,NULL,NULL,NULL),
+    ('IXA-2261',false,true,'2021-09-10','2021-10-30',2,5,false,NULL,NULL,NULL,NULL,NULL),
     ('HTA-1468',false,true,'2021-09-10','2021-11-10',2,2,false,NULL,NULL,NULL,NULL,NULL),
     ('NAS-4213',false,false,NULL,NULL,NULL,NULL,true,'2021-10-20','2021-11-20',1,2,1),
     ('NAL-4595',false,false,NULL,NULL,NULL,NULL,true,'2021-10-25','2021-10-30',2,2,2),
@@ -50,12 +106,14 @@ VALUES
     ('JTL-1616',true,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,1),
     ('HRM-8945',false,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,2),
     ('NET-3865',false,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,2),
-    ('LCZ-8224',false,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,2),
+    ('LCZ-8224',false,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,5),
     ('JQE-0155',false,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,3),
     ('MRY-9564',false,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,3),
     ('HZW-9905',false,false,NULL,NULL,NULL,NULL,false,NULL,NULL,NULL,NULL,4)
 RETURNING *;
 
+-- Para executar esse arquivo no DB
+-- heroku pg:psql < ./db/seed.sql
 -- Query para checar motos disponíveis na data '2021-11-01'
 -- select * from motos where (manutencao is false) and (alugada is false or aluguel_entrega<'2021-11-01') and (reservada is false or reserva_entrega<'2021-11-01');
 -- select count(*) as motos_disponiveis,endereco from locais natural join motos where (manutencao is false) and (alugada is false or aluguel_entrega<'2021-11-01') and (reservada is false or reserva_entrega<'2021-11-01') group by endereco order by motos_disponiveis DESC;
