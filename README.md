@@ -71,3 +71,13 @@ Uma breve descrição das rotas utilizadas pela aplicação motofast
 **/motofasters/:id**: Recupera o motofaster com local_id = :id e os mesmos campos acima
 
 **/motofasters/zona/:zona/turno/:turno**: Lista todos os motofasters com zona = :zona e turno = :turno
+
+<hr>
+
+## Tecnologias Utilizadas [Backend]
+
+* Node.js
+* Express
+* Pg
+* PostgreSQL
+* Heroku
