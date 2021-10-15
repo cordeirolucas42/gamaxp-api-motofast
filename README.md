@@ -72,8 +72,6 @@ Uma breve descrição das rotas utilizadas pela aplicação motofast
 
 **/motofasters/zona/:zona/turno/:turno**: Lista todos os motofasters com zona = :zona e turno = :turno
 
-<hr>
-
 ## Tecnologias Utilizadas [Backend]
 
 * Node.js
@@ -81,3 +79,26 @@ Uma breve descrição das rotas utilizadas pela aplicação motofast
 * Pg
 * PostgreSQL
 * Heroku
+
+
+## Equipe
+
+### Desenvolvimento Web
+
+* [Erick Santos](https://github.com/erickscoelhor)
+* [Lucas Cordeiro](https://github.com/cordeirolucas42)
+
+### UI/UX Design
+
+* Geovanna Luvian
+* Vinícius Lopes
+
+### Growth Marketing
+
+* Grabrielle Côrtes
+* Raquel Hauauini
+
+### Inside Sales
+
+* Rosemberg Freitas
+* Wayne Mendes
