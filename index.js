@@ -7,6 +7,7 @@ app.use(cors())
 
 const motosRoutes = require('./routes/motos')
 const locaisRoutes = require('./routes/locais')
+const motofastersRoutes = require('./routes/motofasters')
 
 app.get('/', (req, res) => {
   res.send("API MotoFast")
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 
 app.use('/motos', motosRoutes)
 app.use('/locais', locaisRoutes)
+app.use('/motofasters', motofastersRoutes)
 
 app.get('/cep/:cep', async (req, res) => {
   const { cep } = req.params
