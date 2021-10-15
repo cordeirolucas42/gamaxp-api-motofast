@@ -8,6 +8,13 @@ motofastersRoutes.get('/', async (req, res) => {
     res.send(rows)
 })
 
+motofastersRoutes.get('/zona/:zona/turno/:turno', async (req, res) => {
+    const { zona, turno } = req.params
+    const query = `SELECT * FROM motofasters WHERE zona=$1 and turno=$2`
+    const { rows } = await pool.query(query, [zona, turno])
+    res.send(rows)
+})
+
 
 motofastersRoutes.get('/:id', async (req, res) => {
     const { id } = req.params
